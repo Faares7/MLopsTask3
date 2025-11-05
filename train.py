@@ -18,18 +18,18 @@ model = LogisticRegression(max_iter=2000, random_state=42)
 model.fit(X_train, y_train)
 
 os.makedirs("models", exist_ok=True)
-model_path = "models/logreg_model.pkl"
+model_path = "models/model.pkl"
 joblib.dump(model, model_path)
 
 train_acc = accuracy_score(y_train, model.predict(X_train))
 
-with open("train_logreg_metrics.json", "w") as f:
+with open("train_metrics.json", "w") as f:
     json.dump({"train_accuracy": train_acc}, f, indent=4)
 
 with mlflow.start_run(run_name="Titanic_LogisticRegression"):
     mlflow.log_param("model", "LogisticRegression")
     mlflow.log_metric("train_accuracy", train_acc)
     mlflow.log_artifact(model_path)
-    mlflow.log_artifact("train_logreg_metrics.json")
+    mlflow.log_artifact("train_metrics.json")
 
 print(f"✅ Logistic Regression accuracy: {train_acc:.4f}")

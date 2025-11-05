@@ -3,8 +3,21 @@ import pandas as pd
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import train_test_split
 import joblib
+import os
 
-# Load raw data
+
+os.makedirs("data", exist_ok=True)
+
+# Download the Titanic dataset if it doesn't exist
+if not os.path.exists("data/raw_data.csv"):
+    print("Downloading Titanic dataset...")
+    url = "https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv"
+    df = pd.read_csv(url)
+    df.to_csv("data/raw_data.csv", index=False)
+else:
+    print("Using existing data/raw_data.csv")
+
+# Continue with your preprocessing as before
 df = pd.read_csv("data/raw_data.csv")
 
 # Drop columns with too many missing values or not useful
